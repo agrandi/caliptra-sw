@@ -83,6 +83,13 @@ regfile interface_regs {
 
         field {} cycle_count[32] = 32'b0;
     } cycle_count;
+
+    reg {
+        default sw=r;
+        default hw=rw;
+
+        field {} fpga_version[32] = 32'b0;
+    } fpga_version;
 };
 
 regfile fifo_regs {
