@@ -341,7 +341,8 @@ caliptra_top caliptra_top_dut (
     .el2_mem_export(el2_mem_export.veer_sram_src),
 
     .ready_for_fuses(hwif_in.interface_regs.status.ready_for_fuses.next),
-    .ready_for_fw_push(hwif_in.interface_regs.status.ready_for_fw_push.next),
+    // TODO: These signals have changed for 2.0
+    //.ready_for_fw_push(hwif_in.interface_regs.status.ready_for_fw_push.next),
     .ready_for_runtime(hwif_in.interface_regs.status.ready_for_runtime.next),
 
     .mbox_sram_cs(mbox_sram_cs),

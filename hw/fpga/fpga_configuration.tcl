@@ -64,7 +64,7 @@ if {$ITRNG} {
 if {$APB} {
   lappend VERILOG_OPTIONS CALIPTRA_APB
 }
-lappend VERILOG_OTPIONS FPGA_VERSION=32'h$VERSION
+lappend VERILOG_OPTIONS FPGA_VERSION=32'h$VERSION
 
 # Start the Vivado GUI for interactive debug
 if {$GUI} {

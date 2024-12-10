@@ -61,9 +61,18 @@ package caliptra_fpga_realtime_regs_pkg;
     } interface_regs__cycle_count__in_t;
 
     typedef struct {
+        logic [31:0] next;
+    } interface_regs__fpga_version__fpga_version__in_t;
+
+    typedef struct {
+        interface_regs__fpga_version__fpga_version__in_t fpga_version;
+    } interface_regs__fpga_version__in_t;
+
+    typedef struct {
         interface_regs__generic_output_wires__in_t generic_output_wires[2];
         interface_regs__status__in_t status;
         interface_regs__cycle_count__in_t cycle_count;
+        interface_regs__fpga_version__in_t fpga_version;
     } interface_regs__in_t;
 
     typedef struct {
@@ -236,6 +245,14 @@ package caliptra_fpga_realtime_regs_pkg;
     } interface_regs__cycle_count__out_t;
 
     typedef struct {
+        logic [31:0] value;
+    } interface_regs__fpga_version__fpga_version__out_t;
+
+    typedef struct {
+        interface_regs__fpga_version__fpga_version__out_t fpga_version;
+    } interface_regs__fpga_version__out_t;
+
+    typedef struct {
         interface_regs__generic_input_wires__out_t generic_input_wires[2];
         interface_regs__generic_output_wires__out_t generic_output_wires[2];
         interface_regs__cptra_obf_key__out_t cptra_obf_key[8];
@@ -244,6 +261,7 @@ package caliptra_fpga_realtime_regs_pkg;
         interface_regs__pauser__out_t pauser;
         interface_regs__itrng_divisor__out_t itrng_divisor;
         interface_regs__cycle_count__out_t cycle_count;
+        interface_regs__fpga_version__out_t fpga_version;
     } interface_regs__out_t;
 
     typedef struct {
