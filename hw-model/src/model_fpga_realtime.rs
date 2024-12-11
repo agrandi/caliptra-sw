@@ -6,7 +6,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
-use std::{env, str::FromStr};
+use std::{env, slice, str::FromStr};
 
 use bitfield::bitfield;
 use caliptra_emu_bus::{Bus, BusError, BusMmio};
@@ -368,7 +368,7 @@ impl HwModel for ModelFpgaRealtime {
             .map_mapping(FPGA_WRAPPER_MAPPING)
             .map_err(fmt_uio_error)? as *mut u32;
         let mmio = dev.map_mapping(CALIPTRA_MAPPING).map_err(fmt_uio_error)? as *mut u32;
-        let rom = dev.map_mapping(ROM_MAPPING).map_err(fmt_uio_error)? as *mut u32;
+        let rom = dev.map_mapping(ROM_MAPPING).map_err(fmt_uio_error)? as *mut u8;
 
         let realtime_thread_exit_flag = Arc::new(AtomicBool::new(false));
         let realtime_thread_exit_flag2 = realtime_thread_exit_flag.clone();
@@ -438,7 +438,9 @@ impl HwModel for ModelFpgaRealtime {
         }
 
         // Write ROM image over backdoor
-        
+        writeln!(m.output().logger(), "Writing ROM")?;
+        let mut rom_slice = unsafe { slice::from_raw_parts_mut(rom, params.rom.len()) }; //0xC000) };
+        rom_slice.copy_from_slice(params.rom);
         //let mut rom_driver = std::fs::OpenOptions::new()
         //    .write(true)
         //    .open("/dev/caliptra-rom-backdoor")
