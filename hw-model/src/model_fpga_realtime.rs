@@ -612,7 +612,7 @@ impl<'a> FpgaRealtimeBus<'a> {
         let addr = addr as usize;
         unsafe {
             match addr {
-                0x3002_0000..=0x3003_ffff => Some(self.mmio.add((addr - 0x3002_0000) / 4)),
+                0x3002_0000..=0x3003_ffff => Some(self.mmio.add((addr - 0x3000_0000) / 4)),
                 _ => None,
             }
         }
@@ -621,9 +621,10 @@ impl<'a> FpgaRealtimeBus<'a> {
 impl<'a> Bus for FpgaRealtimeBus<'a> {
     fn read(&mut self, _size: RvSize, addr: RvAddr) -> Result<RvData, BusError> {
         if let Some(ptr) = self.ptr_for_addr(addr) {
+            eprintln!("reading {ptr:?}");
             Ok(unsafe { ptr.read_volatile() })
         } else {
-            println!("Error LoadAccessFault");
+            eprintln!("Error LoadAccessFault");
             Err(BusError::LoadAccessFault)
         }
     }
@@ -636,6 +637,7 @@ impl<'a> Bus for FpgaRealtimeBus<'a> {
     ) -> Result<(), caliptra_emu_bus::BusError> {
         if let Some(ptr) = self.ptr_for_addr(addr) {
             // TODO: support 16-bit and 8-bit writes
+            eprintln!("writing {ptr:?}");
             unsafe { ptr.write_volatile(val) };
             Ok(())
         } else {
