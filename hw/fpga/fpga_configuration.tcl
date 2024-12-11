@@ -74,7 +74,9 @@ if {$GUI} {
 if {$BOARD eq "ZCU104"} {
   set PART xczu7ev-ffvc1156-2-e
 } elseif {$BOARD eq "VCK190"} {
-  set PART xcvc1902-vsva2197-2MP-e-S
+  #set PART xcvc1902-vsva2197-2MP-e-S
+  # vmk180
+  set PART xcvm1802-vsva2197-2MP-e-S
 } else {
   puts "Board $BOARD not supported"
   exit
