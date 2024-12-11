@@ -32,6 +32,7 @@ pub enum OpenOcdError {
 // UIO mapping indices
 const FPGA_WRAPPER_MAPPING: usize = 0;
 const CALIPTRA_MAPPING: usize = 1;
+const ROM_MAPPING: usize = 2;
 
 // Set to core_clk cycles per ITRNG sample.
 const ITRNG_DIVISOR: u32 = 400;
@@ -367,6 +368,7 @@ impl HwModel for ModelFpgaRealtime {
             .map_mapping(FPGA_WRAPPER_MAPPING)
             .map_err(fmt_uio_error)? as *mut u32;
         let mmio = dev.map_mapping(CALIPTRA_MAPPING).map_err(fmt_uio_error)? as *mut u32;
+        let rom = dev.map_mapping(ROM_MAPPING).map_err(fmt_uio_error)? as *mut u32;
 
         let realtime_thread_exit_flag = Arc::new(AtomicBool::new(false));
         let realtime_thread_exit_flag2 = realtime_thread_exit_flag.clone();
@@ -436,12 +438,13 @@ impl HwModel for ModelFpgaRealtime {
         }
 
         // Write ROM image over backdoor
-        let mut rom_driver = std::fs::OpenOptions::new()
-            .write(true)
-            .open("/dev/caliptra-rom-backdoor")
-            .unwrap();
-        rom_driver.write_all(params.rom)?;
-        rom_driver.sync_all()?;
+        
+        //let mut rom_driver = std::fs::OpenOptions::new()
+        //    .write(true)
+        //    .open("/dev/caliptra-rom-backdoor")
+        //    .unwrap();
+        //rom_driver.write_all(params.rom)?;
+        //rom_driver.sync_all()?;
 
         // Sometimes there's garbage in here; clean it out
         m.clear_log_fifo();
@@ -590,6 +593,7 @@ impl Drop for ModelFpgaRealtime {
         // Unmap UIO memory space so that the file lock is released
         self.unmap_mapping(self.wrapper, FPGA_WRAPPER_MAPPING);
         self.unmap_mapping(self.mmio, CALIPTRA_MAPPING);
+        self.unmap_mapping(self.mmio, ROM_MAPPING);
 
         // Close openocd
         match &mut self.openocd {
