@@ -321,7 +321,6 @@ impl FuseBank<'_> {
     /// # Returns
     ///     manufactoring debug unlock token
     ///
-
     pub fn manuf_dbg_unlock_token(&self) -> Array4x4 {
         let soc_ifc_regs = self.soc_ifc.regs();
         Array4x4::read_from_reg(soc_ifc_regs.fuse_manuf_dbg_unlock_token())

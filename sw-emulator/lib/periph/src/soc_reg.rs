@@ -214,6 +214,28 @@ register_bitfields! [
         DEBUG_INTENT OFFSET(0) NUMBITS(1) [],
     ],
 
+    /// SubSytem Debug Manufacturing Service Request Register
+    SsDbgManufServiceRegReq [
+        MANUF_DBG_UNLOCK_REQ OFFSET(0) NUMBITS(1) [],
+        PROD_DBG_UNLOCK_REQ OFFSET(1) NUMBITS(1) [],
+        UDS_PROGRAM_REQ OFFSET(2) NUMBITS(1) [],
+        RSVD OFFSET(3) NUMBITS(29) [],
+    ],
+
+    /// SubSytem Debug Manufacturing Service Response Register
+    SsDbgManufServiceRegRsp [
+        MANUF_DBG_UNLOCK_SUCCESS OFFSET(0) NUMBITS(1) [],
+        MANUF_DBG_UNLOCK_FAIL OFFSET(1) NUMBITS(1) [],
+        MANUF_DBG_UNLOCK_IN_PROGRESS OFFSET(2) NUMBITS(1) [],
+        PROD_DBG_UNLOCK_SUCCESS OFFSET(3) NUMBITS(1) [],
+        PROD_DBG_UNLOCK_FAIL OFFSET(4) NUMBITS(1) [],
+        PROD_DBG_UNLOCK_IN_PROGRESS OFFSET(5) NUMBITS(1) [],
+        UDS_PROGRAM_SUCCESS OFFSET(6) NUMBITS(1) [],
+        UDS_PROGRAM_FAIL OFFSET(7) NUMBITS(1) [],
+        UDS_PROGRAM_IN_PROGRESS OFFSET(8) NUMBITS(1) [],
+        RSVD OFFSET(9) NUMBITS(23) [],
+    ],
+
     /// Per-Type Interrupt Enable Register
     GlobalIntrEn [
         ERROR_EN OFFSET(0) NUMBITS(1) [],
@@ -676,6 +698,12 @@ struct SocRegistersImpl {
     #[register(offset = 0x530)]
     ss_debug_intent: ReadOnlyRegister<u32, SsDebugIntent::Register>,
 
+    #[register(offset = 0x5c0)]
+    ss_dbg_manuf_service_reg_req: ReadWriteRegister<u32, SsDbgManufServiceRegReq::Register>,
+
+    #[register(offset = 0x5c4)]
+    ss_dbg_manuf_service_reg_rsp: ReadWriteRegister<u32, SsDbgManufServiceRegRsp::Register>,
+
     /// INTERNAL_OBF_KEY Register
     internal_obf_key: [u32; 8],
 
@@ -868,7 +896,9 @@ impl SocRegistersImpl {
             fuse_mldsa_revocation: Default::default(),
             fuse_soc_stepping_id: ReadWriteRegister::new(0),
             fuse_manuf_dbg_unlock_token: [0; 4],
-            ss_debug_intent: ReadOnlyRegister::new(0),
+            ss_debug_intent: ReadOnlyRegister::new(if args.debug_intent { 1 } else { 0 }),
+            ss_dbg_manuf_service_reg_req: ReadWriteRegister::new(args.dbg_manuf_service_req.into()),
+            ss_dbg_manuf_service_reg_rsp: ReadWriteRegister::new(0),
             internal_obf_key: args.cptra_obf_key,
             internal_iccm_lock: ReadWriteRegister::new(0),
             internal_fw_update_reset: ReadWriteRegister::new(0),
