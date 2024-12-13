@@ -76,6 +76,9 @@ pub struct RomEnv {
 
     /// Mldsa87 Engine
     pub mldsa87: Mldsa87,
+
+    /// Dma engine
+    pub dma: Dma,
 }
 
 impl RomEnv {
@@ -104,6 +107,7 @@ impl RomEnv {
             trng,
             persistent_data: PersistentDataAccessor::new(),
             mldsa87: Mldsa87::new(MldsaReg::new()),
+            dma: Dma::new(AxiDmaReg::new()),
         })
     }
 }
