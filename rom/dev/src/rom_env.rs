@@ -17,14 +17,14 @@ Abstract:
 
 use crate::fht::FhtDataStore;
 use caliptra_drivers::{
-    DeobfuscationEngine, Ecc384, Hmac, KeyVault, Lms, Mailbox, Mldsa87, PcrBank,
+    DeobfuscationEngine, Dma, Ecc384, Hmac, KeyVault, Lms, Mailbox, Mldsa87, PcrBank,
     PersistentDataAccessor, Sha1, Sha256, Sha2_512_384, Sha2_512_384Acc, SocIfc, Trng,
 };
 use caliptra_error::CaliptraResult;
 use caliptra_registers::{
-    csrng::CsrngReg, doe::DoeReg, ecc::EccReg, entropy_src::EntropySrcReg, hmac::HmacReg,
-    kv::KvReg, mbox::MboxCsr, mldsa::MldsaReg, pv::PvReg, sha256::Sha256Reg, sha512::Sha512Reg,
-    sha512_acc::Sha512AccCsr, soc_ifc::SocIfcReg, soc_ifc_trng::SocIfcTrngReg,
+    axi_dma::AxiDmaReg, csrng::CsrngReg, doe::DoeReg, ecc::EccReg, entropy_src::EntropySrcReg,
+    hmac::HmacReg, kv::KvReg, mbox::MboxCsr, mldsa::MldsaReg, pv::PvReg, sha256::Sha256Reg,
+    sha512::Sha512Reg, sha512_acc::Sha512AccCsr, soc_ifc::SocIfcReg, soc_ifc_trng::SocIfcTrngReg,
 };
 
 /// Rom Context
