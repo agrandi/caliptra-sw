@@ -210,6 +210,10 @@ register_bitfields! [
         RSVD OFFSET(16) NUMBITS(16) [],
     ],
 
+    SsDebugIntent [
+        DEBUG_INTENT OFFSET(0) NUMBITS(1) [],
+    ],
+
     /// Per-Type Interrupt Enable Register
     GlobalIntrEn [
         ERROR_EN OFFSET(0) NUMBITS(1) [],
@@ -669,6 +673,9 @@ struct SocRegistersImpl {
     #[register_array(offset = 0x34c)]
     fuse_manuf_dbg_unlock_token: [u32; FUSE_MANUF_DBG_UNLOCK_TOKEN_SIZE / 4],
 
+    #[register(offset = 0x530)]
+    ss_debug_intent: ReadOnlyRegister<u32, SsDebugIntent::Register>,
+
     /// INTERNAL_OBF_KEY Register
     internal_obf_key: [u32; 8],
 
@@ -861,6 +868,7 @@ impl SocRegistersImpl {
             fuse_mldsa_revocation: Default::default(),
             fuse_soc_stepping_id: ReadWriteRegister::new(0),
             fuse_manuf_dbg_unlock_token: [0; 4],
+            ss_debug_intent: ReadOnlyRegister::new(0),
             internal_obf_key: args.cptra_obf_key,
             internal_iccm_lock: ReadWriteRegister::new(0),
             internal_fw_update_reset: ReadWriteRegister::new(0),
