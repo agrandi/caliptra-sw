@@ -289,6 +289,8 @@ int caliptra_init_fuses(const struct caliptra_fuses *fuses)
     caliptra_generic_and_fuse_write(GENERIC_AND_FUSE_REG_FUSE_LMS_VERIFY, (uint32_t)fuses->lms_verify);
     caliptra_generic_and_fuse_write(GENERIC_AND_FUSE_REG_FUSE_LMS_REVOCATION, fuses->lms_revocation);
     caliptra_generic_and_fuse_write(GENERIC_AND_FUSE_REG_FUSE_SOC_STEPPING_ID, fuses->soc_stepping_id);
+    caliptra_generic_and_fuse_write(GENERIC_AND_FUSE_REG_CPTRA_SECURITY_STATE_DEVICE_LIFECYCLE, fuses->life_cycle);
+    caliptra_generic_and_fuse_write(GENERIC_AND_FUSE_REG_CPTRA_SECURITY_STATE_DEBUG_LOCKED, fuses->debug_locked);
 
     // Write to Caliptra Fuse Done
     caliptra_write_u32(CALIPTRA_TOP_REG_GENERIC_AND_FUSE_REG_CPTRA_FUSE_WR_DONE, 1);

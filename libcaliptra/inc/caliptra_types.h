@@ -41,6 +41,7 @@ struct caliptra_fuses {
     bool lms_verify;
     uint32_t lms_revocation;
     uint16_t soc_stepping_id;
+    bool debug_locked;
 };
 
 //    Request/Response fields
